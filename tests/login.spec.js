@@ -39,3 +39,10 @@ test('TC-004: Empty username show corresponding error message', async ({ page })
     await expect(page.getByText('Username is required')).toBeVisible();
 });
 
+test('TC-005: Invalid login with empty password', async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/');
+    await page.getByRole('textbox', {name: 'Username'}).fill(STANDARD_USER);
+    await page.getByRole('button', {name: 'Login'}).click();
+    await expect(page).toHaveURL('https://www.saucedemo.com/');
+    await expect(page.getByText('Password is required')).toBeVisible();
+});
