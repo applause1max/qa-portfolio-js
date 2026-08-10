@@ -1,4 +1,5 @@
 const { test, expect } = require ('@playwright/test');
+const { assert } = require('node:console');
 
 const STANDARD_USER = 'standard_user';
 const LOCKED_OUT_USER = 'locked_out_user';
@@ -45,4 +46,11 @@ test('TC-005: Invalid login with empty password', async ({ page }) => {
     await page.getByRole('button', {name: 'Login'}).click();
     await expect(page).toHaveURL('https://www.saucedemo.com/');
     await expect(page.getByText('Password is required')).toBeVisible();
+});
+
+test('TC-006: Invalid login with empty fields', async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/');
+    await page.getByRole('button', {name: "Login"}).click();
+    await expect(page.getByText('Username is required')).toBeVisible();
+    await expect(page).toHaveURL('https://www.saucedemo.com/');
 });
