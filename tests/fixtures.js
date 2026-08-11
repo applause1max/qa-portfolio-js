@@ -9,6 +9,7 @@ const myTest = test.extend({
         await page.getByRole('textbox', { name: 'Password' }).fill(PASSWORD);
         await page.getByRole('button', { name: 'Login' }).click();
         await use(page);
-    }});
+    }
+});
 
 module.exports = { test: myTest, expect };
