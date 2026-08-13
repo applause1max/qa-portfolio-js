@@ -28,3 +28,24 @@ test('TC-014: Remove item from cart reverts button state and clears badge', asyn
     await expect(loggedInPage.getByRole('button', {name: "Add to cart"}).first()).toBeVisible();
     await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).not.toBeVisible();
 });
+
+/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
+test('TC-015:Remove item from cart via cart page', async ({ loggedInPage }) =>{
+    await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
+    await loggedInPage.locator('[data-test="shopping-cart-link"]').click();
+    await loggedInPage.getByRole('button', {name: 'Remove'}).click();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).not.toBeVisible();
+    await expect(loggedInPage.locator('[data-test="inventory-item"]')).toHaveCount(0);
+});
+
+
+test('TC-016: Cart contents persist across navigation.', async({ loggedInPage }) =>{
+    await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+    await loggedInPage.locator('[data-test="inventory-item-name"]').first().click();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+    await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
+    await loggedInPage.getByRole('button', {name: 'Back to products'}).click();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+    await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
+});
