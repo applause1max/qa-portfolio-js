@@ -3,6 +3,18 @@ const { test, expect } = require('./fixtures');
 /** @param {{ loggedInPage: import('@playwright/test').Page }} params */
 test('TC-012: Add sigle item to cart', async ({loggedInPage}) => {
     await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
-    expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
-    expect(loggedInPage.locator('[data-test="shopping-cart-link"]')).toHaveText('1');
+    await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-link"]')).toHaveText('1');
+});
+
+/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
+test('TC-013: Add multiple items to cart', async ({ loggedInPage }) => {
+    const addButtons = await loggedInPage.getByRole('button', {name: 'Add to cart'}).all();
+    await addButtons[0].click();
+    await addButtons[1].click();
+    await addButtons[2].click();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('3');
+
+    const removeButtons = await loggedInPage.getByRole('button', {name: 'Remove'}).all();
+    expect(removeButtons.length).toBe(3);
 });
