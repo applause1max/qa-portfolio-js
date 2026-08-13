@@ -1,3 +1,4 @@
+const { log } = require('node:console');
 const { test, expect } = require('./fixtures');
 
 /** @param {{ loggedInPage: import('@playwright/test').Page }} params */
@@ -17,4 +18,13 @@ test('TC-013: Add multiple items to cart', async ({ loggedInPage }) => {
 
     const removeButtons = await loggedInPage.getByRole('button', {name: 'Remove'}).all();
     expect(removeButtons.length).toBe(3);
+});
+
+/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
+test('TC-014: Remove item from cart reverts button state and clears badge', async ({ loggedInPage }) => {
+    await loggedInPage.getByRole('button', {name: "Add to cart"}).first().click();
+    await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
+    await loggedInPage.getByRole('button', {name: 'Remove'}).first().click();
+    await expect(loggedInPage.getByRole('button', {name: "Add to cart"}).first()).toBeVisible();
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).not.toBeVisible();
 });
