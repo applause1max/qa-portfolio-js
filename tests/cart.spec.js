@@ -49,3 +49,17 @@ test('TC-016: Cart contents persist across navigation.', async({ loggedInPage })
     await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
     await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
 });
+
+test('TC-017: Cart displays correct item count with zero items.', async ({ loggedInPage }) =>{
+    await loggedInPage.locator('[data-test="shopping-cart-link"]').click();
+    await expect(loggedInPage.locator('[data-test="inventory-item"]')).toHaveCount(0);
+    await expect(loggedInPage.locator('[data-test="error"]')).toHaveCount(0);
+});
+
+test('TC-018: "Continue Shopping" from cart returns to inventory.', async ({ loggedInPage }) =>{
+    await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
+    await loggedInPage.locator('[data-test="shopping-cart-link"]').click();
+    await loggedInPage.getByRole('button', {name: "Continue Shopping"}).click();
+    await expect(loggedInPage).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+});
