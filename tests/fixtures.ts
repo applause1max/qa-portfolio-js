@@ -1,9 +1,9 @@
-const {test, expect} = require('@playwright/test');
+import {test, expect, Page} from '@playwright/test';
 const STANDARD_USER = 'standard_user';
 const PASSWORD = 'secret_sauce';
 
-const myTest = test.extend({
-    loggedInPage: async ({page}, use) => {
+const myTest = test.extend<{ loggedInPage: Page }>({
+        loggedInPage: async ({page}, use) => {
         await page.goto('https://www.saucedemo.com/');
         await page.getByRole('textbox', { name: 'Username' }).fill(STANDARD_USER);
         await page.getByRole('textbox', { name: 'Password' }).fill(PASSWORD);
@@ -12,4 +12,4 @@ const myTest = test.extend({
     }
 });
 
-module.exports = { test: myTest, expect };
+export { myTest as test, expect };

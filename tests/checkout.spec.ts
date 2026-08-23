@@ -1,4 +1,4 @@
-const { test, expect } = require('./fixtures');
+import { test, expect } from './fixtures';
 
 test('TC-019: Complete checkout with valid information and items in cart', async ({ loggedInPage }) => {
     await loggedInPage.getByRole('button', {name: "Add to cart"}).first().click();
@@ -69,9 +69,9 @@ test('TC-024: Order summary reflects correct item total and pricing', async ({ l
   const taxText = await loggedInPage.locator('[data-test="tax-label"]').textContent();
   const totalText = await loggedInPage.locator('[data-test="total-label"]').textContent();
 
-  const subtotal = parseFloat(subtotalText.match(/\$([\d.]+)/)[1]);
-  const tax = parseFloat(taxText.match(/\$([\d.]+)/)[1]);
-  const total = parseFloat(totalText.match(/\$([\d.]+)/)[1]);
+  const subtotal = parseFloat(subtotalText!.match(/\$([\d.]+)/)![1]);
+  const tax = parseFloat(taxText!.match(/\$([\d.]+)/)![1]);
+  const total = parseFloat(totalText!.match(/\$([\d.]+)/)![1]);
 
   expect(total).toBeCloseTo(subtotal + tax, 2);
 });

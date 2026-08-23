@@ -1,4 +1,4 @@
-const { test, expect } = require ('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 const STANDARD_USER = 'standard_user';
 const LOCKED_OUT_USER = 'locked_out_user';

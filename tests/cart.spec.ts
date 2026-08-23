@@ -1,9 +1,9 @@
-const { test, expect } = require('./fixtures');
+import { test, expect } from './fixtures';
 
 test('TC-012: Add sigle item to cart', async ({loggedInPage}) => {
     await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
     await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
-    await expect(loggedInPage.locator('[data-test="shopping-cart-link"]')).toHaveText('1');
+    await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 });
 
 test('TC-013: Add multiple items to cart', async ({ loggedInPage }) => {

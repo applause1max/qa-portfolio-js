@@ -1,4 +1,4 @@
-const {test, expect} = require('./fixtures');
+import {test, expect} from './fixtures';
 
 test('TC-007: Verify sorting in ascending order', async ({ loggedInPage }) => {
     await loggedInPage.locator('[data-test="product-sort-container"]').selectOption('az');
