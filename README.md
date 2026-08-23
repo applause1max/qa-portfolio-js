@@ -1,25 +1,26 @@
-# QA Portfolio (JavaScript / Playwright)
+# QA Portfolio (TypeScript / Playwright)
 
-End-to-end test automation for [SauceDemo](https://www.saucedemo.com/), built with Playwright Test (JavaScript) as a conversion of an original Python/Playwright portfolio project, demonstrating equivalent automation coverage in a JavaScript/Node.js stack.
+End-to-end test automation for [SauceDemo](https://www.saucedemo.com/), built with Playwright Test (TypeScript). Originally converted from a Python/Playwright (pytest) portfolio to plain JavaScript, then migrated to TypeScript, demonstrating equivalent automation coverage across all three stacks.
 
 ## Tech Stack
 
 - **Playwright Test** (`@playwright/test`) — test runner, assertions, browser automation
-- **JavaScript (Node.js)** — plain JS by design; a TypeScript version is planned as a follow-up
+- **TypeScript** — typed fixtures, strict mode enabled
 - **GitHub Actions** — CI pipeline, runs full suite on every push to `main`
 - **Trace-on-failure** — automatic trace capture for any failing test, viewable via Playwright's trace viewer
 
 ## Project Structure
 
 ```
-qa-portfolio-js/
+qa-portfolio-ts/
 ├── tests/
-│   ├── fixtures.js       # custom loggedInPage fixture (extends base test)
-│   ├── login.spec.js     # TC-001 to TC-006: authentication
-│   ├── sorting.spec.js   # TC-007 to TC-011: product sorting/filtering
-│   ├── cart.spec.js      # TC-012 to TC-018: shopping cart
-│   └── checkout.spec.js  # TC-019 to TC-026: checkout flow
-├── playwright.config.js  # browser projects, tracing config
+│   ├── fixtures.ts       # custom loggedInPage fixture (extends base test, typed via generics)
+│   ├── login.spec.ts     # TC-001 to TC-006: authentication
+│   ├── sorting.spec.ts   # TC-007 to TC-011: product sorting/filtering
+│   ├── cart.spec.ts      # TC-012 to TC-018: shopping cart
+│   └── checkout.spec.ts  # TC-019 to TC-026: checkout flow
+├── playwright.config.ts  # browser projects, tracing config
+├── tsconfig.json         # TypeScript compiler config (strict mode)
 └── .github/workflows/playwright.yml  # CI pipeline
 ```
 
@@ -67,8 +68,9 @@ Every push to `main` triggers the full suite via GitHub Actions (`.github/workfl
 
 ## Notes on This Conversion
 
-This project was converted line-by-line from an original Python/Playwright (pytest) portfolio to plain JavaScript, including:
+This project was converted line-by-line from an original Python/Playwright (pytest) portfolio, first to plain JavaScript and then to TypeScript, including:
 - Custom `page` lifecycle and tracing replaced by Playwright Test's built-in `page` fixture and `trace: 'retain-on-failure'` config
-- `conftest.py` fixtures rebuilt using `test.extend()`
+- `conftest.py` fixtures rebuilt using `test.extend<{ loggedInPage: Page }>()`, with the fixture's shape declared explicitly via a generic
 - `@pytest.mark.xfail` replaced with `test.fail()`
 - Python's `sorted()` replaced with JS's `.sort()`, including explicit numeric comparators (`(a, b) => a - b`) to avoid JS's default string-based sort behavior
+- TypeScript strict mode surfaced a real edge case Python/JS both let pass silently: `.textContent()` can return `null`, requiring explicit handling before use (TC-024)
