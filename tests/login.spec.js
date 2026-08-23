@@ -1,5 +1,4 @@
 const { test, expect } = require ('@playwright/test');
-const { assert } = require('node:console');
 
 const STANDARD_USER = 'standard_user';
 const LOCKED_OUT_USER = 'locked_out_user';

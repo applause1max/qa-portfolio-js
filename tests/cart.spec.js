@@ -1,14 +1,11 @@
-const { log } = require('node:console');
 const { test, expect } = require('./fixtures');
 
-/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
 test('TC-012: Add sigle item to cart', async ({loggedInPage}) => {
     await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
     await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
     await expect(loggedInPage.locator('[data-test="shopping-cart-link"]')).toHaveText('1');
 });
 
-/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
 test('TC-013: Add multiple items to cart', async ({ loggedInPage }) => {
     const addButtons = await loggedInPage.getByRole('button', {name: 'Add to cart'}).all();
     await addButtons[0].click();
@@ -20,7 +17,6 @@ test('TC-013: Add multiple items to cart', async ({ loggedInPage }) => {
     expect(removeButtons.length).toBe(3);
 });
 
-/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
 test('TC-014: Remove item from cart reverts button state and clears badge', async ({ loggedInPage }) => {
     await loggedInPage.getByRole('button', {name: "Add to cart"}).first().click();
     await expect(loggedInPage.getByRole('button', {name: 'Remove'}).first()).toBeVisible();
@@ -29,7 +25,6 @@ test('TC-014: Remove item from cart reverts button state and clears badge', asyn
     await expect(loggedInPage.locator('[data-test="shopping-cart-badge"]')).not.toBeVisible();
 });
 
-/** @param {{ loggedInPage: import('@playwright/test').Page }} params */
 test('TC-015:Remove item from cart via cart page', async ({ loggedInPage }) =>{
     await loggedInPage.getByRole('button', {name: 'Add to cart'}).first().click();
     await loggedInPage.locator('[data-test="shopping-cart-link"]').click();

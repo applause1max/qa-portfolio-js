@@ -1,4 +1,3 @@
-const { log } = require('node:console');
 const { test, expect } = require('./fixtures');
 
 test('TC-019: Complete checkout with valid information and items in cart', async ({ loggedInPage }) => {
